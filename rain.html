@@ -1,0 +1,107 @@
+﻿<html>
+<head>
+<style>
+  @font-face {
+    font-family: 'mplus_2p_black';
+    src: url('mplus-2p-black-subset.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  body {
+    margin: 0;
+    position: absolute;
+    overflow: hidden;
+    background: #202123;
+  }
+  #preload-font {
+    font-family: mplus_2p_black;
+    position: absolute;
+    color: #202123;
+    visibility: hidden;
+  }
+  html {
+    height: 100%;
+  }
+</style>
+</head>
+<body style="">
+<div id="preload-font">.</div>
+<script>
+var w = document.body.clientWidth
+var h = document.body.clientHeight
+var size = 10;
+var lines = h/size;
+var columns = w/size;
+
+var c = document.createElement('canvas');
+c.width = w;
+c.height = h;
+document.body.appendChild(c);
+
+var c2 = document.createElement('canvas');
+c2.width = w;
+c2.height = h;
+
+document.body.onload = function() {
+  var ctx = c2.getContext('2d');
+
+  ctx.font=size+"px mplus_2p_black";
+  
+  // ctx.fillStyle = "#000000";
+  // ctx.fillRect(0,0,w,h);
+  
+  // var gradient=ctx.createLinearGradient(0,0,w,0);
+  // gradient.addColorStop("0","magenta");
+  // gradient.addColorStop("0.5","blue");
+  // gradient.addColorStop("1.0","red");
+  // ctx.fillStyle=gradient;
+
+  ctx.fillStyle = "#444444";
+  
+  for(var i = 0; i < lines; i++) {
+    ctx.fillText(generateLine(columns),0,(size-2)+size*i); 
+  }
+    
+  var ctx = c.getContext('2d');
+  
+  var i = 0;
+  for(var i = 0; i < columns; i++) {
+    var start = Math.floor(Math.random()*lines)-8;
+    var end = Math.floor(Math.random()*(lines-4)+4+start);
+    var gradient=ctx.createLinearGradient(0,start*size,0,end*size);
+    gradient.addColorStop(0.0,'rgba(40,160,70,0)');
+    gradient.addColorStop(0.85,'rgba(40,160,70,1.0)');
+    gradient.addColorStop(1.0,'rgba(110,240,140,1.0)');
+    ctx.fillStyle=gradient;
+    ctx.fillRect(i*size,2+start*size,size,(end-start)*size);
+  }
+    
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.drawImage(c2,0,0);
+};
+
+function generateLine(length) {
+  var chars = "あいうえおかきくけこさしすせそたちつてとなにぬね"
+            + "のはひふへほまみむめもやゆよらりるれろわゐゑをん"
+            + "アイウエオカキクケコサシスセソタチツテトナニヌネ"
+            + "ノハヒフヘホマミムメモヤユヨラリルレロワヰヱヲン";
+  var text = "";
+  for(var i = 0; i < length; i++) {
+    var r = Math.floor(Math.random()*chars.length);
+    text += chars.slice(r,r+1);
+  }
+  return text;
+}
+
+// generate the text - ask a mask!
+// 
+// 
+// mask the stuff using https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html
+// source-in vs destenation-out
+// 
+// 
+// 
+
+</script>
+</body>
+</html>
