@@ -1,31 +1,8 @@
 ﻿<html>
 <head>
-<style>
-  @font-face {
-    font-family: 'mplus_2p_black';
-    src: url('mplus-2p-black-subset.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-  body {
-    margin: 0;
-    position: absolute;
-    overflow: hidden;
-    background: #202123;
-  }
-  #preload-font {
-    font-family: mplus_2p_black;
-    position: absolute;
-    color: #202123;
-    visibility: hidden;
-  }
-  html {
-    height: 100%;
-  }
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body style="">
-<div id="preload-font">.</div>
+<body>
 <script>
 var w = document.body.clientWidth
 var h = document.body.clientHeight
@@ -42,14 +19,15 @@ var c2 = document.createElement('canvas');
 c2.width = w;
 c2.height = h;
 
-document.body.onload = function() {
-  var ctx = c2.getContext('2d');
+let font = `900 ${size}px "M+ 2p"`;
 
-  ctx.font=size+"px mplus_2p_black";
-  
+document.fonts.load(font, 'あ').then(() => {
+  var ctx = c2.getContext('2d');
+  ctx.font = font;
+
   // ctx.fillStyle = "#000000";
   // ctx.fillRect(0,0,w,h);
-  
+
   // var gradient=ctx.createLinearGradient(0,0,w,0);
   // gradient.addColorStop("0","magenta");
   // gradient.addColorStop("0.5","blue");
@@ -57,13 +35,13 @@ document.body.onload = function() {
   // ctx.fillStyle=gradient;
 
   ctx.fillStyle = "#444444";
-  
+
   for(var i = 0; i < lines; i++) {
-    ctx.fillText(generateLine(columns),0,(size-2)+size*i); 
+    ctx.fillText(generateLine(columns),0,(size-2)+size*i);
   }
-    
+
   var ctx = c.getContext('2d');
-  
+
   var i = 0;
   for(var i = 0; i < columns; i++) {
     var start = Math.floor(Math.random()*lines)-8;
@@ -75,10 +53,10 @@ document.body.onload = function() {
     ctx.fillStyle=gradient;
     ctx.fillRect(i*size,2+start*size,size,(end-start)*size);
   }
-    
+
   ctx.globalCompositeOperation = 'destination-in';
   ctx.drawImage(c2,0,0);
-};
+});
 
 function generateLine(length) {
   var chars = "あいうえおかきくけこさしすせそたちつてとなにぬね"
@@ -94,13 +72,13 @@ function generateLine(length) {
 }
 
 // generate the text - ask a mask!
-// 
-// 
+//
+//
 // mask the stuff using https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html
 // source-in vs destenation-out
-// 
-// 
-// 
+//
+//
+//
 
 </script>
 </body>

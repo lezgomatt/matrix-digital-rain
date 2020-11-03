@@ -1,30 +1,8 @@
 <html>
 <head>
-<style>
-  @font-face {
-    font-family: 'mplus_2p_black';
-    src: url('mplus-2p-black-subset.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-  body {
-    margin: 0;
-    position: absolute;
-    overflow: hidden;
-    background: #202123;
-    font-family: mplus_2p_black; 
-    color: transparent;
-  }
-  #preload-font {
-
-  }
-  html {
-    height: 100%;
-  }
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- <div style="font-family: mplus_2p_black; position: absolute; color: #202123; visibility: hidden;"> </div> -->
 <script>
 var w = document.body.clientWidth
 var h = document.body.clientHeight
@@ -46,17 +24,18 @@ c2.height = h;
 var animData = [];
 var animData2 = [];
 
-document.body.onload = function() {
-  var ctx = c2.getContext('2d');
+let font = `900 ${size}px "M+ 2p"`;
 
-  ctx.font=size+"px mplus_2p_black";
-  
+document.fonts.load(font, 'あ').then(() => {
+  var ctx = c2.getContext('2d');
+  ctx.font = font;
+
   ctx.fillStyle = "#444444";
-  
+
   for(var i = 0; i < lines; i++) {
-    ctx.fillText(generateLine(columns),offset,(size-fix)+size*i); 
+    ctx.fillText(generateLine(columns),offset,(size-fix)+size*i);
   }
-  
+
   for(var i = 0; i < columns; i++) {
     var r = Math.floor(Math.random()*49)+7;
     var s = Math.floor(Math.random()*2)+1;
@@ -69,28 +48,28 @@ document.body.onload = function() {
     u = Math.floor(Math.random()*2);
     animData2[i] = {len: r, frames: s, cycle: s, pos: t, two: u, sl: 1};
   }
-    
+
   draw();
-};
+});
 
 function draw() {
   requestAnimationFrame(draw); // do a time check... vs setTimeout? hm.. comparisons are quick right? polyfilling.
   // var s = Date.now();
   // setTimeout(draw, 1000);
   var ctx = c.getContext('2d');
-     
+
   ctx.globalCompositeOperation = 'source-over';
-  
+
   ctx.clearRect(0,0,w,h);
-  
+
   for(var i = 0; i < columns; i++) {
     var ad = animData[i];
     if(ad.cycle++ >= ad.frames) {
       ad.cycle = 1;
       var j = (ad.frames === 1 && ad.two > 0) ? 2 : 1;
-      while(j > 0) { 
+      while(j > 0) {
         ad.pos++;
-        if(ad.sl < ad.len) ad.sl++; 
+        if(ad.sl < ad.len) ad.sl++;
         j--;
       }
       if(ad.pos-ad.len-1 > lines) ad.pos = -Math.floor(Math.random()*140);
@@ -107,15 +86,15 @@ function draw() {
     ctx.fillStyle=gradient;
     ctx.fillRect(offset+i*size,fix+(end-ad.sl)*size,size,(ad.sl+1)*size);
   }
-  
+
   for(var i = 0; i < columns; i++) {
     var ad = animData2[i];
     if(ad.cycle++ >= ad.frames) {
       ad.cycle = 1;
       var j = (ad.frames === 1 && ad.two > 0) ? 2 : 1;
-      while(j > 0) { 
+      while(j > 0) {
         ad.pos++;
-        if(ad.sl < ad.len) ad.sl++; 
+        if(ad.sl < ad.len) ad.sl++;
         j--;
       }
       if(ad.pos-ad.len-1 > lines) ad.pos = -Math.floor(Math.random()*140);
@@ -136,7 +115,7 @@ function draw() {
     ctx.fillStyle=gradient;
     ctx.fillRect(offset+i*size,fix+(end-ad.sl)*size,size,(ad.sl+1)*size);
   }
-    
+
   ctx.globalCompositeOperation = 'destination-in';
   ctx.drawImage(c2,0,0);
   // console.log(Date.now() - s, 'ms');
@@ -156,13 +135,13 @@ function generateLine(length) {
 }
 
 // generate the text - ask a mask!
-// 
-// 
+//
+//
 // mask the stuff using https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html
 // source-in vs destenation-out
-// 
-// 
-// 
+//
+//
+//
 
 </script>
 </body>

@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'M+ 2p';
+  src: url('subset-mplus-2p-black.woff2') format('woff2'), url('subset-mplus-2p-black.woff') format('woff');
+  unicode-range: U+3040-30FF;
+  font-weight: 900;
+  font-style: normal;
+  font-display: block;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #202123;
+}
