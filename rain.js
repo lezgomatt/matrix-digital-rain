@@ -19,7 +19,7 @@ const height = window.innerHeight;
 const scale = window.devicePixelRatio;
 
 const fontSize = 10; // px
-const font = `900 ${fontSize}px "M+ 2p"`;
+const font = `900 ${fontSize / scale}px "M+ 2p"`;
 
 const numRows = Math.ceil(height / fontSize);
 const numCols = Math.ceil(width / fontSize);
@@ -125,7 +125,7 @@ function drawTextMask(canvas) {
 
   for (let r = 0; r < numRows; r++) {
     let text = genText(numCols);
-    let y = fontSize * (r + 1);
+    let y = fontSize / scale * (r + 1);
     ctx.fillText(text, 0, y);
   }
 
