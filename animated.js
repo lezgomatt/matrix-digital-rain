@@ -9,8 +9,8 @@ const numCols = Math.ceil(width / fontSize);
 const minColLen = 8;
 
 const rowPerSec = fontSize / 1000;
-const minVel = 4 * rowPerSec;
-const maxVel = 16 * rowPerSec;
+const minVel = 8 * rowPerSec;
+const maxVel = 20 * rowPerSec;
 
 let lastDraw = null;
 
@@ -79,7 +79,7 @@ function drawGradients() {
 
     let gradient = ctx.createLinearGradient(0, y, 0, y + h);
     gradient.addColorStop(0.0, 'rgba(40, 160, 70, 0)');
-    gradient.addColorStop(0.65,'rgba(40, 160, 70, 1.0)');
+    gradient.addColorStop(0.65, 'rgba(40, 160, 70, 1.0)');
     gradient.addColorStop(0.85, 'rgba(40, 160, 70, 1.0)');
     gradient.addColorStop(1.0, 'rgba(110, 240, 140, 1.0)');
 
@@ -120,12 +120,15 @@ function genText(length) {
   return text;
 }
 
-function genCol() {
-  return {
-    len: randInt(minColLen, numRows - minColLen * 2),
-    pos: -height * 2 + randInt(-minColLen, numRows - minColLen / 2) * fontSize,
-    vel: minVel + Math.random() * (maxVel - minVel),
-  };
+function genCol(onScreen = false) {
+  let len = randInt(minColLen, numRows - minColLen * 2);
+  let rowPos = onScreen
+    ? randInt(-minColLen, numRows - minColLen / 2)
+    : randInt(-numRows / 4, 0) - len;
+  let pos = rowPos * fontSize;
+  let vel = minVel + Math.random() * (maxVel - minVel);
+
+  return { len, pos, vel };
 }
 
 function randElem(collection) {
