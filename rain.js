@@ -1,8 +1,8 @@
-let flags = new URLSearchParams(location.search);
-let showFps = flags.has('fps');
-let isAnimated = showFps || flags.has('animated');
-let stats = null;
+const flags = new URLSearchParams(location.search);
+const showFps = flags.has('fps');
+const isAnimated = showFps || flags.has('animated');
 
+let stats = null;
 if (showFps) {
   let s = document.createElement('script');
   s.src = 'https://mrdoob.github.io/stats.js/build/stats.min.js';
@@ -16,6 +16,7 @@ if (showFps) {
 
 const width = window.innerWidth;
 const height = window.innerHeight;
+const scale = window.devicePixelRatio;
 
 const fontSize = 10; // px
 const font = `900 ${fontSize}px "M+ 2p"`;
@@ -49,8 +50,12 @@ document.fonts.load(font, 'あ').then(() => {
 
 function makeCanvas() {
   let canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
+  canvas.width = Math.floor(width * scale);
+  canvas.height = Math.floor(height * scale);
+  canvas.getContext('2d').scale(scale, scale);
+
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
 
   return canvas;
 }
