@@ -1,5 +1,18 @@
 let flags = new URLSearchParams(location.search);
-let isAnimated = flags.has('animated');
+let showFps = flags.has('fps');
+let isAnimated = showFps || flags.has('animated');
+let stats = null;
+
+if (showFps) {
+  let s = document.createElement('script');
+  s.src = 'https://mrdoob.github.io/stats.js/build/stats.min.js';
+  s.onload = () => {
+    stats = new Stats();
+    document.body.appendChild(stats.dom);
+  };
+
+  document.head.appendChild(s);
+}
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -55,6 +68,10 @@ function drawFrame(loop = true) {
   ctx.drawImage(textMaskCanvas, 0, 0);
 
   if (loop) {
+    if (stats != null) {
+      stats.update();
+    }
+
     window.requestAnimationFrame(drawFrame);
   }
 }
