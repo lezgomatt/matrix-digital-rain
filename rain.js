@@ -1,3 +1,6 @@
+let flags = new URLSearchParams(location.search);
+let isAnimated = flags.has('animated');
+
 const width = window.innerWidth;
 const height = window.innerHeight;
 
@@ -21,14 +24,14 @@ document.body.appendChild(mainCanvas);
 
 let columns = [];
 for (let c = 0; c < numCols; c++) {
-  columns.push(genCol());
+  columns.push(genCol(!isAnimated));
 }
 
 document.fonts.load(font, 'あ').then(() => {
   drawTextMask(textMaskCanvas);
 
   lastDraw = Date.now();
-  window.requestAnimationFrame(drawFrame);
+  drawFrame(isAnimated);
 });
 
 function makeCanvas() {
@@ -39,7 +42,7 @@ function makeCanvas() {
   return canvas;
 }
 
-function drawFrame() {
+function drawFrame(loop = true) {
   let now = Date.now();
   let dt = now - lastDraw;
   lastDraw = now;
@@ -51,7 +54,9 @@ function drawFrame() {
   ctx.globalCompositeOperation = 'destination-in';
   ctx.drawImage(textMaskCanvas, 0, 0);
 
-  window.requestAnimationFrame(drawFrame);
+  if (loop) {
+    window.requestAnimationFrame(drawFrame);
+  }
 }
 
 function updateCols(dt) {
