@@ -32,7 +32,6 @@ const maxVel = 20 * rowPerSec;
 let lastDraw = null;
 
 let mainCanvas = makeCanvas();
-mainCanvas.getContext('2d').scale(scale, scale);
 let textMaskCanvas = makeCanvas();
 document.body.appendChild(mainCanvas);
 
@@ -57,6 +56,8 @@ function makeCanvas() {
   canvas.style.width = width + 'px';
   canvas.style.height = height + 'px';
 
+  canvas.getContext('2d').scale(scale, scale);
+
   return canvas;
 }
 
@@ -69,8 +70,11 @@ function drawFrame(loop = true) {
   drawGradients();
 
   let ctx = mainCanvas.getContext('2d');
+  ctx.save();
+  ctx.resetTransform();
   ctx.globalCompositeOperation = 'destination-in';
   ctx.drawImage(textMaskCanvas, 0, 0);
+  ctx.restore();
 
   if (loop) {
     if (stats != null) {
@@ -94,7 +98,6 @@ function updateCols(dt) {
 
 function drawGradients() {
   let ctx = mainCanvas.getContext('2d');
-  ctx.globalCompositeOperation = 'source-over';
   ctx.clearRect(0, 0, width, height);
 
   for (let c = 0; c < numCols; c++) {
