@@ -18,7 +18,7 @@ const width = window.innerWidth;
 const height = window.innerHeight;
 const scale = window.devicePixelRatio;
 
-const fontSize = 10; // px
+const fontSize = parseFontSize(flags.get('size'), 10); // px
 const font = `900 ${fontSize}px "M+ 2p"`;
 
 const numRows = Math.ceil(height / fontSize);
@@ -171,4 +171,10 @@ function randInt(min, max) {
   let span = max - min + 1;
 
   return min + Math.floor(Math.random() * span);
+}
+
+function parseFontSize(str, fallback) {
+  let n = parseInt(str);
+
+  return Number.isInteger(n) && n > 0 ? n : fallback;
 }
