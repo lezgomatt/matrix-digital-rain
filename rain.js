@@ -123,13 +123,15 @@ function calcRow(y) {
 }
 
 function drawTextMask(canvas) {
+  const offset = fontSize * 0.15;
+
   let ctx = canvas.getContext('2d');
   ctx.font = font;
 
   for (let r = 0; r < numRows; r++) {
     let text = genText(numCols);
     let y = fontSize * (r + 1);
-    ctx.fillText(text, 0, y);
+    ctx.fillText(text, 0, y - offset);
   }
 
   return canvas;
